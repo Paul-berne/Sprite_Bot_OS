@@ -1,0 +1,174 @@
+-- Pour la question 1
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (1, 'San Juan', false),
+    (1, 'Asuncion', false),
+    (1, 'San Jose', true),
+    (1, 'Santiago', false);
+
+-- Pour la question 2
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (2, 'Seoul', false),
+    (2, 'Manila', true),
+    (2, 'Hanoi', false),
+    (2, 'Taipei', false);
+
+-- Pour la question 3
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (3, 'Male', true),
+    (3, 'Maseru', false),
+    (3, 'Port Louis', false),
+    (3, 'chisinau', false);
+
+-- Pour la question 4
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (4, 'Muscat', false),
+    (4, 'Munich', false),
+    (4, 'Bucharest', true),
+    (4, 'Belgrade', false);
+
+-- Pour la question 5
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (5, 'Brussels', false),
+    (5, 'Bern', true),
+    (5, 'San Marino', false),
+    (5, 'Tallin', true);
+
+-- Pour la question 6
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (6, 'A sponge', false),
+    (6, 'A stone', false),
+    (6, 'A candle', false),
+    (6, 'An egg', true);
+
+-- Pour la question 7
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (7, 'Germany', false),
+    (7, 'UK', false),
+    (7, 'New Zealand', true),
+    (7, 'Italy', false);
+
+-- Pour la question 8
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (8, '1959', false),
+    (8, '1969', true),
+    (8, '1967', false),
+    (8, '1981', false);
+
+-- Pour la question 9
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (9, 'Venice', true),
+    (9, 'Milan', false),
+    (9, 'Marseille', false),
+    (9, 'Rome', false);
+
+-- Pour la question 10
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (10, '2000', false),
+    (10, '1985', false),
+    (10, '1994', true),
+    (10, '1952', false);
+ 
+-- Pour la question 11
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (11, '1991', true),
+    (11, '2015', false),
+    (11, '1960', false),
+    (11, '1500 BC ;)', false);
+
+-- Pour la question 12
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (12, 'Canary Islands', false),
+    (12, 'Malta', false),
+    (12, 'Greece', true),
+    (12, 'Cyprus', false);
+
+-- Pour la question 13
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (13, 'Poland', false),
+    (13, 'Hungary', true),
+    (13, 'Peru', false),
+    (13, 'Luxembourg', false);
+
+-- Pour la question 14
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (14, 'Brazil', false),
+    (14, 'Japan', false),
+    (14, 'China', false),
+    (14, 'France', true);
+
+-- Pour la question 15
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (15, 'USA and Russia', true),
+    (15, 'Morocco and Spain', false),
+    (15, 'Japan and China', false),
+    (15, 'UK and France', false);
+
+-- Pour la question 16
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (16, 'Wolfgang Amadeus Mozart', false),
+    (16, 'Van Gogh', false),
+    (16, 'Pablo Picasso', true),
+    (16, 'Leonardo Da Vinci', false);
+
+-- Pour la question 17
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (17, 'Jolly Jumper', false),
+    (17, 'Rocinante', true),
+    (17, 'Margarita', false),
+    (17, 'John Doe', false);
+
+-- Pour la question 18
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (18, 'Butane gas', false),
+    (18, 'Oxygen', false),
+    (18, 'Hydrogen', false),
+    (18, 'Ozone', true);
+
+-- Pour la question 19
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (19, 'Sugar Cane', false),
+    (19, 'Agave', true),
+    (19, 'Rosemary', false),
+    (19, 'Palm tree', false);
+
+-- Pour la question 20
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (20, 'Baker Street', true),
+    (20, 'Carnaby Street', false),
+    (20, 'Barking Road', false),
+    (20, 'Piccadilly Street', false);
+
+-- Pour la question 21
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (21, 'Roger Moore', false),
+    (21, 'Pierce Brosnan', false),
+    (21, 'Sean Connery', true),
+    (21, 'Daniel Craig', false);
+
+-- Pour la question 22
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (22, 'Optimus Prime', true),
+    (22, 'Amazon Prime', false),
+    (22, 'Ironhide', false),
+    (22, 'Megatron', false);
+
+-- Pour la question 23
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (23, 'Madagascar', false),
+    (23, 'USA', false),
+    (23, 'China', false),
+    (23, 'Uk', true);
+
+-- Pour la question 24
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (24, 'Miami Heat', false),
+    (24, 'Chicago Bulls', false),
+    (24, 'Boston Celtics', true),
+    (24, 'Los Angeles Lakers', false);
+
+-- Pour la question 25
+INSERT INTO Answers (question_id, answer_text, is_correct) VALUES
+    (25, 'John Terry', false),
+    (25, 'Miroslav Klose', true),
+    (25, 'Diego Armando Maradona', false),
+    (25, 'Ronaldinho Gáucho', false);
