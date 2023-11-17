@@ -1,18 +1,10 @@
 package control;
 
-import model.QuizGameGUI;
-import model.QuizGame;
-
-import javax.swing.*;
+import java.sql.SQLException;
+import java.text.ParseException;
 
 public class Start {
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            String playerName = JOptionPane.showInputDialog("Quel est votre nom ?");
-            if (playerName != null && !playerName.isEmpty()) {
-                QuizGame player1game = Controller.getRandomQuizSetForQuizGame(playerName);
-                new QuizGameGUI(player1game);
-            }
-        });
+    public static void main(String[] args) throws ParseException, SQLException {
+        Controller leController = new Controller();
     }
 }
