@@ -35,6 +35,6 @@ public class Configuration {
     // Méthode pour lire une propriété et la décrypter
     public String readProperty(String theKey) {
         // Décrypte la valeur de la propriété en utilisant l'encrypteur
-        return encryptor.decrypt(properties.getProperty(theKey));
+    	return encryptor.decrypt(properties.getProperty(theKey));
     }
 }

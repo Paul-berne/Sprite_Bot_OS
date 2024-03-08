@@ -68,7 +68,7 @@ public class Controller {
         DataFileUser dataFileUser = new DataFileUser(this);
         try {
             if (dataFileUser.lireUserSQL(login, password)) {
-                this.lePlayer = dataFileUser.getLePlayer();
+            	this.lePlayer = dataFileUser.getLePlayer();
                 return true;
             } else {
                 return false;

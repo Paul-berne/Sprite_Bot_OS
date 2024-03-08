@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import control.Controller;
+import tools.BCrypt;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -94,7 +96,7 @@ public class Login extends JFrame {
                 // Récupère le nom d'utilisateur et le mot de passe
                 String nomUtilisateur = txtLogin.getText();
                 String motDePasse = txtPwd.getText();
-
+                
                 // Vérifie l'authentification
                 if (unController.verifyUserLogin(nomUtilisateur, motDePasse)) {
                     // Affiche la fenêtre de démarrage du jeu

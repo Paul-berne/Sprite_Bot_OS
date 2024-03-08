@@ -55,10 +55,16 @@ public class DataFileUser {
                 String password = resultSet.getString("password");
                 String name = resultSet.getString("player_name");
 
+            	System.out.println(login + password + name);
+            	
+            	System.out.println(BCrypt.checkpw(thePassword, password));
+            	
                 // Vérifie si les informations de connexion correspondent
                 if (login.equals(theLogin) && BCrypt.checkpw(thePassword, password)) {
+                	System.out.println(login + password + name);
+                	System.out.println(BCrypt.checkpw(thePassword, password));
                     verif = true;
-                    this.lePlayer = new Player(login, password, name);
+                    this.lePlayer = new Player(theLogin, password, name);
                     break;
                 }
             }
@@ -85,7 +91,9 @@ public class DataFileUser {
         return verif;
     }
 
-    // Méthode pour changer le mot de passe de l'utilisateur
+ 
+
+	// Méthode pour changer le mot de passe de l'utilisateur
     public void ChangePasswordUser(String theLogin, String thePassword) {
         // Hash le nouveau mot de passe avec un sel
         String passwordToHash = thePassword;
@@ -105,6 +113,6 @@ public class DataFileUser {
 
     // Getter pour l'objet Player associé à l'utilisateur
     public Player getLePlayer() {
-        return lePlayer;
-    }
+ 		return lePlayer;
+ 	}
 }

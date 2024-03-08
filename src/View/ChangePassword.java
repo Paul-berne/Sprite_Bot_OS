@@ -86,8 +86,6 @@ public class ChangePassword extends JFrame {
         	    } else if (!result.isValid()) {
         	        lblPasswordCheck.setText("Password does not meet security rules.");
         	    } else {
-        	        System.out.println(login);
-        	        System.out.println(lemotDePasse);
         	        lblPasswordCheck.setText("");
         	        leDAOUser.ChangePasswordUser(login, lemotDePasse);
         	        myController.CreateQuizGameGUI();

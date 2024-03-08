@@ -8,6 +8,8 @@ import control.Controller;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JTextPane;
+import javax.swing.JLabel;
 
 public class GameStart extends JFrame {
 
@@ -27,7 +29,7 @@ public class GameStart extends JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage("img\\sb-logo-monogram-circle.jpg"));
         setTitle("Sprite bot");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 300, 200);
+        setBounds(100, 100, 703, 401);
 
         // Panneau de contenu
         contentPane = new JPanel();
@@ -37,8 +39,20 @@ public class GameStart extends JFrame {
 
         // Bouton "Start"
         JButton btnStart = new JButton("Start");
-        btnStart.setBounds(160, 82, 89, 23);
+        btnStart.setBounds(94, 286, 188, 44);
         contentPane.add(btnStart);
+        
+        JButton btnLeave = new JButton("Leave");
+        btnLeave.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
+        btnLeave.setBounds(351, 286, 188, 44);
+        contentPane.add(btnLeave);
+        
+        JLabel lblNewLabel = new JLabel("Welcome " + unController.getLePlayer().getName() + " !");
+        lblNewLabel.setBounds(223, 11, 257, 20);
+        contentPane.add(lblNewLabel);
 
         // Ajout d'un écouteur d'événements pour le bouton "Start"
         btnStart.addActionListener(new ActionListener() {
@@ -51,6 +65,16 @@ public class GameStart extends JFrame {
 
                 // Affiche un message dans la console
                 System.out.println("Game started!");
+            }
+        });
+        
+        btnLeave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Ferme la fenêtre actuelle
+                dispose();
+
+                // Affiche un message dans la console
+                System.out.println("Game Closed!");
             }
         });
     }
