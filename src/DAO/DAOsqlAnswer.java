@@ -45,7 +45,7 @@ public class DAOsqlAnswer {
             lesAnswer = new ArrayList<Answer>();
 
             // Requête SQL pour récupérer les réponses associées à la question spécifiée
-            String sqlQuery = "select codeanswer, descriptionanswer, iscorrect from answer inner join question on answer.id = question.id where question.id = " + numeroQuestion + ";";
+            String sqlQuery = "select codeanswer, descriptionanswer, iscorrect from answer inner join question on answer.id_question = question.id_question where question.id_question = " + numeroQuestion + ";";
             resultSet = statement.executeQuery(sqlQuery);
 
             // Parcourt les résultats de la requête

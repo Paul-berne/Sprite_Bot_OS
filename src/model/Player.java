@@ -5,7 +5,7 @@ public class Player {
     // Spécification
     private String login;
     private String password;
-    private String nomclassement;
+    private String player_rank;
 
     // Implémentation
     public Player(String login, String password, String nomclassement) {
@@ -13,7 +13,7 @@ public class Player {
         super();
         this.login = login;
         this.password = password;
-        this.nomclassement = nomclassement;
+        this.player_rank = nomclassement;
     }
 
     // Getter pour le nom d'utilisateur (login)
@@ -37,12 +37,12 @@ public class Player {
     }
 
     // Getter pour le nom du joueur
-    public String getName() {
-        return nomclassement;
+    public String getplayer_rank() {
+        return player_rank;
     }
 
     // Setter pour définir le nom du joueur
-    public void setName(String nomclassement) {
-        this.nomclassement = nomclassement;
+    public void setplayer_rank(String nomclassement) {
+        this.player_rank = nomclassement;
     }
 }

@@ -45,12 +45,12 @@ public class DAOsqlQuestion {
     public void LireQuestionSQL(int numeroQuestion) {
         try {
             // Requête SQL pour récupérer la question associée au numéro spécifié
-            String sqlQuery = "select question.id, descriptionquestion from question where id = " + numeroQuestion + ";";
+            String sqlQuery = "select question.id_question, descriptionquestion from question where id_question = " + numeroQuestion + ";";
             resultSet = statement.executeQuery(sqlQuery);
 
             // Parcourt les résultats de la requête
             while (resultSet.next()) {
-                int questionId = resultSet.getInt("id");
+                int questionId = resultSet.getInt("id_question");
                 String questionDesc = resultSet.getString("descriptionquestion");
 
                 // Remplit le tableau de questions avec les données lues

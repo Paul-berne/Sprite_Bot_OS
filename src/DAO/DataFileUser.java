@@ -46,16 +46,16 @@ public class DataFileUser {
 
         try {
             // Requête SQL pour récupérer les informations de tous les joueurs
-            String sqlQuery = "SELECT pseudo, password, nomclassement FROM player";
+            String sqlQuery = "SELECT pseudo, password, player_rank FROM player";
             resultSet = statement.executeQuery(sqlQuery);
 
             // Parcourt les résultats de la requête
             while (resultSet.next()) {
                 String login = resultSet.getString("pseudo");
                 String password = resultSet.getString("password");
-                String nomclassement = resultSet.getString("nomclassement");
+                String player_rank = resultSet.getString("player_rank");
 
-            	System.out.println(login + password + nomclassement);
+            	System.out.println(login + password + player_rank);
             	
             	System.out.println(BCrypt.checkpw(thePassword, password));
             	System.out.println(thePassword);
@@ -63,7 +63,7 @@ public class DataFileUser {
                 // Vérifie si les informations de connexion correspondent
                 if (login.equals(theLogin) && BCrypt.checkpw(thePassword, password)) {
                     verif = true;
-                    this.lePlayer = new Player(theLogin, password, nomclassement);
+                    this.lePlayer = new Player(theLogin, password, player_rank);
                     break;
                 }
             }
