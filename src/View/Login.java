@@ -96,7 +96,6 @@ public class Login extends JFrame {
                 // Récupère le nom d'utilisateur et le mot de passe
                 String nomUtilisateur = txtLogin.getText();
                 String motDePasse = txtPwd.getText();
-                
                 // Vérifie l'authentification
                 if (unController.verifyUserLogin(nomUtilisateur, motDePasse)) {
                     // Affiche la fenêtre de démarrage du jeu

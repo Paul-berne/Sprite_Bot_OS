@@ -23,7 +23,7 @@ public class DAOsqlQuestion {
         try {
             // Initialise le contrôleur et établit la connexion à la base de données
             this.myController = theController;
-            String dbname = this.myController.getMyConfiguration().readProperty("database.url");
+            String dbname = this.myController.getMyConfiguration().readProperty("databaseprivate.url");
             String username = this.myController.getMyConfiguration().readProperty("database.username");
             String password = this.myController.getMyConfiguration().readProperty("database.password");
 
@@ -45,13 +45,13 @@ public class DAOsqlQuestion {
     public void LireQuestionSQL(int numeroQuestion) {
         try {
             // Requête SQL pour récupérer la question associée au numéro spécifié
-            String sqlQuery = "select question.id_question, desc_question from question where id_question = " + numeroQuestion + ";";
+            String sqlQuery = "select question.id, descriptionquestion from question where id = " + numeroQuestion + ";";
             resultSet = statement.executeQuery(sqlQuery);
 
             // Parcourt les résultats de la requête
             while (resultSet.next()) {
-                int questionId = resultSet.getInt("id_question");
-                String questionDesc = resultSet.getString("desc_question");
+                int questionId = resultSet.getInt("id");
+                String questionDesc = resultSet.getString("descriptionquestion");
 
                 // Remplit le tableau de questions avec les données lues
                 questions[0] = String.valueOf(questionId);

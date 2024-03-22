@@ -16,6 +16,7 @@ public class Controller {
     private Player lePlayer;
     private DAOsqlQuestion leStubQuestion;
     private DAOsqlAnswer leStubAnswer;
+    private DataFileUser leStubUser;
     private ArrayList<Question> lesQuestions;
     private ArrayList<Answer> lesReponses;
     private Login myLogin;
@@ -25,6 +26,7 @@ public class Controller {
     public Controller() throws ParseException, SQLException {
         // Initialise la configuration, la fenêtre de connexion et charge les questions
         this.myConfiguration = new Configuration();
+        this.leStubUser = new DataFileUser(this);
         this.myLogin = new Login(this);
         this.myLogin.setLocation(100, 100);
         myLogin.setVisible(true);
@@ -65,10 +67,9 @@ public class Controller {
 
     // Vérifie les informations de connexion de l'utilisateur
     public boolean verifyUserLogin(String login, String password) {
-        DataFileUser dataFileUser = new DataFileUser(this);
         try {
-            if (dataFileUser.lireUserSQL(login, password)) {
-            	this.lePlayer = dataFileUser.getLePlayer();
+            if (this.leStubUser.lireUserSQL(login, password)) {
+            	this.lePlayer = this.leStubUser.getLePlayer();
                 return true;
             } else {
                 return false;

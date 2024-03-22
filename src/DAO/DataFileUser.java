@@ -27,7 +27,7 @@ public class DataFileUser {
         try {
             // Initialise le contrôleur et établit la connexion à la base de données
             this.myController = theController;
-            String dbname = this.myController.getMyConfiguration().readProperty("database.url");
+            String dbname = this.myController.getMyConfiguration().readProperty("databaseprivate.url");
             String username = this.myController.getMyConfiguration().readProperty("database.username");
             String password = this.myController.getMyConfiguration().readProperty("database.password");
 
@@ -46,25 +46,24 @@ public class DataFileUser {
 
         try {
             // Requête SQL pour récupérer les informations de tous les joueurs
-            String sqlQuery = "SELECT login, password, player_name FROM player";
+            String sqlQuery = "SELECT pseudo, password, nomclassement FROM player";
             resultSet = statement.executeQuery(sqlQuery);
 
             // Parcourt les résultats de la requête
             while (resultSet.next()) {
-                String login = resultSet.getString("login");
+                String login = resultSet.getString("pseudo");
                 String password = resultSet.getString("password");
-                String name = resultSet.getString("player_name");
+                String nomclassement = resultSet.getString("nomclassement");
 
-            	System.out.println(login + password + name);
+            	System.out.println(login + password + nomclassement);
             	
             	System.out.println(BCrypt.checkpw(thePassword, password));
+            	System.out.println(thePassword);
             	
                 // Vérifie si les informations de connexion correspondent
                 if (login.equals(theLogin) && BCrypt.checkpw(thePassword, password)) {
-                	System.out.println(login + password + name);
-                	System.out.println(BCrypt.checkpw(thePassword, password));
                     verif = true;
-                    this.lePlayer = new Player(theLogin, password, name);
+                    this.lePlayer = new Player(theLogin, password, nomclassement);
                     break;
                 }
             }
@@ -73,19 +72,7 @@ public class DataFileUser {
             e.printStackTrace();
         } finally {
             // Ferme les ressources (resultSet, statement, connection)
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            
         }
 
         return verif;

@@ -50,7 +50,7 @@ public class GameStart extends JFrame {
         btnLeave.setBounds(351, 286, 188, 44);
         contentPane.add(btnLeave);
         
-        JLabel lblNewLabel = new JLabel("Welcome " + unController.getLePlayer().getName() + " !");
+        JLabel lblNewLabel = new JLabel("Welcome " + unController.getLePlayer().getLogin() + " !");
         lblNewLabel.setBounds(223, 11, 257, 20);
         contentPane.add(lblNewLabel);
 

@@ -5,15 +5,15 @@ public class Player {
     // Spécification
     private String login;
     private String password;
-    private String name;
+    private String nomclassement;
 
     // Implémentation
-    public Player(String login, String password, String name) {
+    public Player(String login, String password, String nomclassement) {
         // Initialise un joueur avec les informations spécifiées
         super();
         this.login = login;
         this.password = password;
-        this.name = name;
+        this.nomclassement = nomclassement;
     }
 
     // Getter pour le nom d'utilisateur (login)
@@ -38,11 +38,11 @@ public class Player {
 
     // Getter pour le nom du joueur
     public String getName() {
-        return name;
+        return nomclassement;
     }
 
     // Setter pour définir le nom du joueur
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nomclassement) {
+        this.nomclassement = nomclassement;
     }
 }

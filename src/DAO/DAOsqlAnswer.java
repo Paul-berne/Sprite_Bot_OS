@@ -25,7 +25,7 @@ public class DAOsqlAnswer {
         try {
             // Initialise le contrôleur et établit la connexion à la base de données
             this.myController = theController;
-            String dbname = this.myController.getMyConfiguration().readProperty("database.url");
+            String dbname = this.myController.getMyConfiguration().readProperty("databaseprivate.url");
             String username = this.myController.getMyConfiguration().readProperty("database.username");
             String password = this.myController.getMyConfiguration().readProperty("database.password");
 
@@ -45,14 +45,14 @@ public class DAOsqlAnswer {
             lesAnswer = new ArrayList<Answer>();
 
             // Requête SQL pour récupérer les réponses associées à la question spécifiée
-            String sqlQuery = "select id_answer, desc_answer, is_correct from answer inner join question on answer.id_question = question.id_question where question.id_question = " + numeroQuestion + ";";
+            String sqlQuery = "select codeanswer, descriptionanswer, iscorrect from answer inner join question on answer.id = question.id where question.id = " + numeroQuestion + ";";
             resultSet = statement.executeQuery(sqlQuery);
 
             // Parcourt les résultats de la requête
             while (resultSet.next()) {
-                String code_Answer = resultSet.getString("id_answer");
-                boolean is_correct = resultSet.getBoolean("is_correct");
-                String reponseDesc = resultSet.getString("desc_answer");
+                String code_Answer = resultSet.getString("codeanswer");
+                boolean is_correct = resultSet.getBoolean("iscorrect");
+                String reponseDesc = resultSet.getString("descriptionanswer");
 
                 // Crée un objet Answer et l'ajoute à la liste
                 Answer answer = new Answer(reponseDesc, is_correct);
