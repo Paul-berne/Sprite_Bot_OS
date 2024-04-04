@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import control.Controller;
+import model.Player;
 import tools.BCrypt;
 
 import javax.swing.JLabel;
@@ -75,10 +76,14 @@ public class Login extends JFrame {
                 // Récupère le nom d'utilisateur et le mot de passe
                 String nomUtilisateur = txtLogin.getText();
                 String motDePasse = txtPwd.getText();
-
+                myController.getLePlayer().setPseudo(nomUtilisateur);
+                myController.getLePlayer().setPassword(motDePasse);
+                myController.getLePlayer().setNomclassement("");
+                
                 // Vérifie l'authentification
-                if (unController.verifyUserLogin(nomUtilisateur, motDePasse)) {
+                if (unController.verifyUserLogin()) {
                     // Affiche la fenêtre de changement de mot de passe
+                	System.out.println("méthode createframechangepassword");
                     myController.CreateFrameChangePassword(nomUtilisateur);
                     dispose(); // Ferme la fenêtre actuelle
                 } else {
@@ -93,12 +98,17 @@ public class Login extends JFrame {
         // Ajout d'un écouteur d'événements pour le bouton "Login"
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Récupère le nom d'utilisateur et le mot de passe
+            	// Récupère le nom d'utilisateur et le mot de passe
                 String nomUtilisateur = txtLogin.getText();
                 String motDePasse = txtPwd.getText();
+                myController.getLePlayer().setPseudo(nomUtilisateur);
+                myController.getLePlayer().setPassword(motDePasse);
+                myController.getLePlayer().setNomclassement("");
+                
                 // Vérifie l'authentification
-                if (unController.verifyUserLogin(nomUtilisateur, motDePasse)) {
-                    // Affiche la fenêtre de démarrage du jeu
+                if (unController.verifyUserLogin()) {
+                    // Affiche la fenêtre de login
+                	System.out.println("on met le gamestart");
                     myController.CreateGameStart();
                     dispose(); // Ferme la fenêtre actuelle
                 } else {

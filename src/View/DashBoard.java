@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
 
-public class GameStart extends JFrame {
+public class DashBoard extends JFrame {
 
     // Contrôleur associé à la vue
     private Controller myController;
@@ -20,7 +20,7 @@ public class GameStart extends JFrame {
     private JPanel contentPane;
 
     // Constructeur
-    public GameStart(Controller unController) {
+    public DashBoard(Controller unController) {
         // Initialise la vue avec le contrôleur spécifié
         this.myController = unController;
 
@@ -38,9 +38,9 @@ public class GameStart extends JFrame {
         contentPane.setLayout(null);
 
         // Bouton "Start"
-        JButton btnStart = new JButton("Start");
-        btnStart.setBounds(94, 286, 188, 44);
-        contentPane.add(btnStart);
+        JButton btnMonoplayer = new JButton("Monoplayer");
+        btnMonoplayer.setBounds(93, 286, 109, 44);
+        contentPane.add(btnMonoplayer);
         
         JButton btnLeave = new JButton("Leave");
         btnLeave.addActionListener(new ActionListener() {
@@ -50,15 +50,37 @@ public class GameStart extends JFrame {
         btnLeave.setBounds(351, 286, 188, 44);
         contentPane.add(btnLeave);
         
-        JLabel lblNewLabel = new JLabel("Welcome " + unController.getLePlayer().getLogin() + " !");
+        JLabel lblNewLabel = new JLabel("Welcome " + unController.getLePlayer().getPseudo() + " !");
         lblNewLabel.setBounds(223, 11, 257, 20);
         contentPane.add(lblNewLabel);
+        
+        JButton btnmultiplayer = new JButton("Multiplayer");
+        btnmultiplayer.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
+        btnmultiplayer.setBounds(223, 286, 109, 44);
+        contentPane.add(btnmultiplayer);
+        
 
         // Ajout d'un écouteur d'événements pour le bouton "Start"
-        btnStart.addActionListener(new ActionListener() {
+        btnMonoplayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Appelle la méthode du contrôleur pour créer l'IHM du quiz
-                myController.CreateQuizGameGUI();
+                myController.CreateQuizGameGUIMono();
+
+                // Ferme la fenêtre actuelle
+                dispose();
+
+                // Affiche un message dans la console
+                System.out.println("Game started!");
+            }
+        });
+        
+        btnmultiplayer.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Appelle la méthode du contrôleur pour créer l'IHM du quiz
+                //myController.CreateQuizGameGUI();
 
                 // Ferme la fenêtre actuelle
                 dispose();
@@ -72,7 +94,6 @@ public class GameStart extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Ferme la fenêtre actuelle
                 dispose();
-
                 // Affiche un message dans la console
                 System.out.println("Game Closed!");
             }

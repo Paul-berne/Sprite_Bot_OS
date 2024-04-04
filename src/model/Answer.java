@@ -8,10 +8,10 @@ public class Answer {
     private boolean isCorrect;
 
     // Constructeur
-    public Answer(String descriptionAnswer, boolean isCorrect) {
-        this.descriptionAnswer = descriptionAnswer;
-        this.isCorrect = isCorrect;
-    }
+	public Answer() {
+	    	
+	    }
+
 
     // Getter pour la description de la réponse
     public String getDescriptionAnswer() {

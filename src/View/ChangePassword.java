@@ -21,11 +21,9 @@ public class ChangePassword extends JFrame {
     private JPasswordField txtPwd;
     private JPasswordField txtConfirmPwd;
     private JLabel lblPasswordCheck;
-    private DataFileUser leDAOUser;
 
     public ChangePassword(Controller unController, String login) {
         this.myController = unController;
-        this.leDAOUser = new DataFileUser(unController);
         
         setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("img\\sb-logo-monogram-circle.jpg"));
@@ -87,9 +85,10 @@ public class ChangePassword extends JFrame {
         	        lblPasswordCheck.setText("Password does not meet security rules.");
         	    } else {
         	        lblPasswordCheck.setText("");
-        	        leDAOUser.ChangePasswordUser(login, lemotDePasse);
-        	        myController.CreateQuizGameGUI();
+        	        myController.getLePlayer().setPassword(lemotDePasse);
+        	        myController.AskChangePassword();
         	        dispose();
+        	        
         	    }
         	}
 

@@ -10,11 +10,8 @@ public class Question {
     private ArrayList<Answer> answers;
 
     // Constructeur
-    public Question(int id, String descriptionQuestion, ArrayList<Answer> answers) {
-        // Initialise une question avec les informations spécifiées
-        this.id = id;
-        this.descriptionQuestion = descriptionQuestion;
-        this.answers = answers;
+    public Question() {
+    	
     }
 
     // Getter pour l'identifiant de la question

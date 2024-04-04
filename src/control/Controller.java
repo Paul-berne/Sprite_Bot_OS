@@ -1,10 +1,22 @@
 package control;
 
+import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.swing.SwingUtilities;
+
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+
 import model.*;
 import view.*;
 import DAO.*;
@@ -12,124 +24,170 @@ import DAO.*;
 public class Controller {
 
     // Spécification
-    private QuizGame theGame;
+	
+	//model
+    private Game theGame;
     private Player lePlayer;
-    private DAOsqlQuestion leStubQuestion;
-    private DAOsqlAnswer leStubAnswer;
-    private DataFileUser leStubUser;
     private ArrayList<Question> lesQuestions;
     private ArrayList<Answer> lesReponses;
     private Login myLogin;
-    private Configuration myConfiguration;
+    private Score leScore;
+    
+    //websocket
+	private Kryo kryo;
+	private Client client;
+	private volatile boolean responseReceived = false;
+	private volatile boolean responseLogin = false;
+
 
     // Implémentation
     public Controller() throws ParseException, SQLException {
         // Initialise la configuration, la fenêtre de connexion et charge les questions
-        this.myConfiguration = new Configuration();
-        this.leStubUser = new DataFileUser(this);
+		client = new Client();
+		kryo = client.getKryo();
+		kryo.register(SampleRequest.class);
+		kryo.register(String.class);
+		kryo.register(Player.class);
+		kryo.register(Game.class);
+		kryo.register(ArrayList.class);
+		kryo.register(Question.class);
+		kryo.register(Answer.class);
+		kryo.register(Integer.class);
+		
+		client.start();
+		String address = "127.0.0.1";
+		
+		System.out.println("Connecting to server...");
+		try {
+			client.connect(5000, address, 54555, 54777);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		
+		this.lePlayer = new Player();
         this.myLogin = new Login(this);
         this.myLogin.setLocation(100, 100);
         myLogin.setVisible(true);
-        initializeQuestions();
     }
 
-    private void initializeQuestions() {
-        // Initialise la liste de questions de manière aléatoire
-        lesQuestions = new ArrayList<Question>();
-        Random random = new Random();
-        ArrayList<Integer> numerosUtilises = new ArrayList<Integer>();
-
-        for (int i = 0; i < 5; i++) {
-            int randomNumber;
-
-            do {
-                randomNumber = random.nextInt(20) + 1;
-            } while (numerosUtilises.contains(randomNumber));
-
-            numerosUtilises.add(randomNumber);
-
-            // Charge la question à partir de la base de données
-            this.leStubQuestion = new DAOsqlQuestion(this);
-            this.leStubQuestion.LireQuestionSQL(randomNumber);
-            String[] question = this.leStubQuestion.getQuestions();
-
-            // Crée un objet Question et l'ajoute à la liste
-            Question laQuestion = new Question(Integer.valueOf(question[0]), question[1], new ArrayList<Answer>());
-            lesQuestions.add(laQuestion);
-
-            // Charge les réponses à partir de la base de données
-            this.leStubAnswer = new DAOsqlAnswer(this);
-            this.leStubAnswer.LireAnswerSQL(randomNumber);
-            this.lesReponses = leStubAnswer.getLesAnswer();
-            laQuestion.setAnswers(lesReponses);
-        }
-    }
-
+    //side client
     // Vérifie les informations de connexion de l'utilisateur
-    public boolean verifyUserLogin(String login, String password) {
-        try {
-            if (this.leStubUser.lireUserSQL(login, password)) {
-            	this.lePlayer = this.leStubUser.getLePlayer();
-                return true;
-            } else {
-                return false;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    public boolean verifyUserLogin() {
+    	lePlayer.setAction("login");
+    	System.out.println("code listener");
+    	Listener listener = new Listener() {
+    	    public void received (Connection connection, Object object) {
+    	        if (object instanceof Player) {
+    	        	if (((Player) object).getNomclassement() != "") {
+    	        		System.out.println("Received response from server: " + ((Player) object).getNomclassement());
+        	            
+        	            responseLogin = true;
+        	            client.removeListener(this);  // Supprime le Listener
+					}else {
+						responseLogin = false;
+					}
+    	        	responseReceived = true;
+    	        }
+    	    }
+    	};
+    	client.addListener(listener);
+    	client.sendTCP(lePlayer);
 
-    // Crée une fenêtre de changement de mot de passe
+        while(!responseReceived) {
+            try {
+                Thread.sleep(100); // Attendre 100 millisecondes
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        responseReceived = false;
+        return responseLogin;
+    }
+    
+    public void AskChangePassword() {
+    	lePlayer.setAction("changepassword");
+    	System.out.println(lePlayer.getPassword());
+    	System.out.println("code listener");
+    	Listener listener = new Listener() {
+    	    public void received (Connection connection, Object object) {
+    	        if (object instanceof Boolean) {
+    	            client.removeListener(this);  // Supprime le Listener
+    	        	responseReceived = true;
+    	        }
+    	    }
+    	};
+    	client.addListener(listener);
+    	client.sendTCP(lePlayer);
+
+        while(!responseReceived) {
+            try {
+                Thread.sleep(100); // Attendre 100 millisecondes
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        responseReceived = false;
+        
+        if (responseReceived) {
+			CreateGameStart();
+		}
+    }
+    
+ // Crée une fenêtre de changement de mot de passe
     public void CreateFrameChangePassword(String thelogin) {
         SwingUtilities.invokeLater(() -> {
             ChangePassword monIHM = new ChangePassword(this, thelogin);
             monIHM.setVisible(true);
         });
     }
-
-    // Crée l'interface graphique du jeu de quiz
-    public void CreateQuizGameGUI() {
-        SwingUtilities.invokeLater(() -> {
-            QuizGameGUI monIHM = null;
-
-            if (lesQuestions.isEmpty()) {
-                initializeQuestions();
-            }
-
-            // Crée un objet QuizGame et son interface graphique
-            this.theGame = new QuizGame(lePlayer, 0, lesQuestions);
-            monIHM = new QuizGameGUI(this, theGame);
-            monIHM.setVisible(true);
-        });
-    }
-
+    
     // Crée l'écran de démarrage du jeu
     public void CreateGameStart() {
         SwingUtilities.invokeLater(() -> {
-            GameStart monIHM = new GameStart(this);
+            DashBoard monIHM = new DashBoard(this);
             monIHM.setVisible(true);
         });
     }
 
-    // Crée l'écran de récapitulation du jeu
-    public void CreateRecapGame(int playerscore, Boolean hasWon) {
-        SwingUtilities.invokeLater(() -> {
-            RecapGame recapGame = new RecapGame(this, playerscore, hasWon);
-            recapGame.setVisible(true);
-        });
-    }
+    // Crée l'interface graphique du jeu de quiz
+    public void CreateQuizGameGUIMono() {
+    	Listener listener = new Listener() {
+    	    public void received (Connection connection, Object object) {
+    	        if (object instanceof Game) {
+    	        	/**SwingUtilities.invokeLater(() -> {
+    	                QuizGameGUI monIHM = new QuizGameGUI(null, theGame);
+    	                
+    	            });**/
+    	        	theGame = (Game) object;
+    	        	leScore = new Score(theGame.getId_game(), lePlayer.getPseudo(), Date.valueOf(LocalDate.now()), 0, LocalTime.now(), null);
+    	        	System.out.println("création de quizgamegui" + leScore.getDate_game());
+    	            client.removeListener(this);  // Supprime le Listener
+    	        	responseReceived = true;
+    	        }
+    	    }
+    	};
+    	client.addListener(listener);
+    	client.sendTCP("monoplayer");
 
-    // Génère de nouvelles questions
-    public void generateNewQuestions() {
-        initializeQuestions();
+        while(!responseReceived) {
+            try {
+                Thread.sleep(100); // Attendre 100 millisecondes
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        responseReceived = false;
     }
-
-    public QuizGame getTheGame() {
+    
+    public void CreateQuizGameGUIMulti() {
+    	
+    }
+    
+    public Game getTheGame() {
         return theGame;
     }
 
-    public void setTheGame(QuizGame theGame) {
+    public void setTheGame(Game theGame) {
         this.theGame = theGame;
     }
 
@@ -165,7 +223,11 @@ public class Controller {
         this.myLogin = myLogin;
     }
 
-    public Configuration getMyConfiguration() {
-        return myConfiguration;
-    }
+    public static class SampleRequest {
+	    public String text;
+	}
+
+	public static class SampleResponse {
+	    public String text;
+	}
 }

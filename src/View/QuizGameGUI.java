@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import control.Controller;
 import model.Answer;
 import model.Question;
-import model.QuizGame;
+import model.Game;
 
 public class QuizGameGUI extends JFrame {
 
@@ -17,7 +17,7 @@ public class QuizGameGUI extends JFrame {
     private Controller theController;
 
     // Le jeu de quiz
-    private QuizGame game;
+    private Game game;
 
     // L'index de la question actuelle
     private int currentQuestionIndex = 0;
@@ -28,7 +28,7 @@ public class QuizGameGUI extends JFrame {
     private JButton submitButton;
 
     // Constructeur de la classe
-    public QuizGameGUI(Controller leController, QuizGame game) {
+    public QuizGameGUI(Controller leController, Game game) {
         this.theController = leController;
         this.game = game;
 
@@ -88,7 +88,7 @@ public class QuizGameGUI extends JFrame {
 
     // Affiche la question actuelle et les réponses possibles
     private void displayQuestion() {
-        Question currentQuestion = game.getQuestions().get(currentQuestionIndex);
+        Question currentQuestion = game.getLesQuestions().get(currentQuestionIndex);
         questionLabel.setText(currentQuestion.getDescriptionQuestion());
 
         ArrayList<Answer> answers = currentQuestion.getAnswers();
@@ -100,7 +100,7 @@ public class QuizGameGUI extends JFrame {
 
     // Vérifie la réponse et met à jour le score du joueur
     private void checkAnswer() {
-        Question currentQuestion = game.getQuestions().get(currentQuestionIndex);
+        Question currentQuestion = game.getLesQuestions().get(currentQuestionIndex);
         int selectedAnswerIndex = -1;
 
         for (int i = 0; i < 4; i++) {
@@ -121,7 +121,7 @@ public class QuizGameGUI extends JFrame {
     // Passe à la question suivante ou termine le jeu
     private void nextQuestion() {
         currentQuestionIndex++;
-        if (currentQuestionIndex < game.getQuestions().size()) {
+        if (currentQuestionIndex < game.getLesQuestions().size()) {
             displayQuestion();
         } else {
             endGame();
