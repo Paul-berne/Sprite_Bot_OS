@@ -126,14 +126,15 @@ public class QuizGameGUI extends JFrame {
         if (currentQuestionIndex < game.getLesQuestions().size()) {
             displayQuestion();
         } else {
-        	theController.getLeScore().setTime_end(LocalTime.now());
+        	theController.getLeScore().setTime_end(LocalTime.now().toString());
             endGame();
         }
     }
 
     // Affiche un message de fin de jeu avec le score final du joueur
     private void endGame() {
-        this.theController.CreateRecapGame(game.getPlayerScore(), game.getPlayerScore() >= 30);
+    	JOptionPane.showMessageDialog(this, "voulez-vous finir ?", "oui",JOptionPane.INFORMATION_MESSAGE);
+    	theController.ReturnScore();
         dispose();
     }
 }

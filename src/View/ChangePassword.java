@@ -2,8 +2,6 @@ package view;
 
 import org.passay.*;
 
-import DAO.DataFileUser;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 

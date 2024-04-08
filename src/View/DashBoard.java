@@ -80,8 +80,7 @@ public class DashBoard extends JFrame {
         btnmultiplayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Appelle la méthode du contrôleur pour créer l'IHM du quiz
-                //myController.CreateQuizGameGUI();
-
+            	myController.CreateQuizGameGUIMulti();
                 // Ferme la fenêtre actuelle
                 dispose();
 

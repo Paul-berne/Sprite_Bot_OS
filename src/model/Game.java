@@ -8,9 +8,10 @@ public class Game {
     private String type_game;
     private ArrayList<Question> lesQuestions;
     private ArrayList<Player> lesPlayers;
+    private ArrayList<Score> lesScores;
     private String Statut;
     
-	public Game() {
+    public Game() {
 		
 	}
 
@@ -33,7 +34,37 @@ public class Game {
 	public ArrayList<Question> getLesQuestions() {
 		return lesQuestions;
 	}
+
+	public void setId_game(int id_game) {
+		this.id_game = id_game;
+	}
+
+	public void setType_game(String type_game) {
+		this.type_game = type_game;
+	}
+
+	public void setLesQuestions(ArrayList<Question> lesQuestions) {
+		this.lesQuestions = lesQuestions;
+	}
+
+	public void setLesPlayers(ArrayList<Player> lesPlayers) {
+		this.lesPlayers = lesPlayers;
+	}
+
+	public void setStatut(String statut) {
+		Statut = statut;
+	}
+
+	public ArrayList<Score> getLesScores() {
+		return lesScores;
+	}
+
+	public void setLesScores(ArrayList<Score> lesScores) {
+		this.lesScores = lesScores;
+	}
     
 	
     
 }
+
+	

@@ -7,8 +7,6 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.SwingUtilities;
 
@@ -19,7 +17,6 @@ import com.esotericsoftware.kryonet.Listener;
 
 import model.*;
 import view.*;
-import DAO.*;
 
 public class Controller {
 
@@ -30,6 +27,7 @@ public class Controller {
     private Player lePlayer;
     private ArrayList<Question> lesQuestions;
     private ArrayList<Answer> lesReponses;
+    private ArrayList<Score> lesScores;
     private Login myLogin;
     private Score leScore;
     
@@ -53,6 +51,7 @@ public class Controller {
 		kryo.register(Question.class);
 		kryo.register(Answer.class);
 		kryo.register(Integer.class);
+		kryo.register(Score.class);
 		
 		client.start();
 		String address = "127.0.0.1";
@@ -92,7 +91,6 @@ public class Controller {
     	};
     	client.addListener(listener);
     	client.sendTCP(lePlayer);
-
         while(!responseReceived) {
             try {
                 Thread.sleep(100); // Attendre 100 millisecondes
@@ -155,7 +153,7 @@ public class Controller {
     	    public void received (Connection connection, Object object) {
     	        if (object instanceof Game) {
     	        	theGame = (Game) object;
-    	        	leScore = new Score(theGame.getId_game(), lePlayer.getPseudo(), Date.valueOf(LocalDate.now()), 0, LocalTime.now(), null);
+    	        	leScore = new Score(theGame.getId_game(), lePlayer.getPseudo(), Date.valueOf(LocalDate.now()).toString(), 0, LocalTime.now().toString(), null);
     	        	System.out.println("création de quizgamegui" + leScore.getDate_game());
     	        	
     	            client.removeListener(this);  // Supprime le Listener
@@ -165,12 +163,8 @@ public class Controller {
     	};
     	client.addListener(listener);
     	client.sendTCP("monoplayer");
-
-    	if (theGame.getStatut() != null) {
-    		SwingUtilities.invokeLater(() -> {
-                QuizGameGUI monIHM = new QuizGameGUI(this, theGame);
-            });
-		}
+    	
+    	
     	
         while(!responseReceived) {
             try {
@@ -179,11 +173,63 @@ public class Controller {
                 e.printStackTrace();
             }
         }
+        if (responseReceived) {
+    		SwingUtilities.invokeLater(() -> {
+                QuizGameGUI monIHM = new QuizGameGUI(this, theGame);
+                monIHM.setVisible(true);
+            });
+		}
         responseReceived = false;
     }
     
     public void CreateQuizGameGUIMulti() {
+    	Listener listener = new Listener() {
+    	    public void received (Connection connection, Object object) {
+    	        if (object instanceof Game) {
+    	        	theGame = (Game) object;
+    	        	leScore = new Score(theGame.getId_game(), lePlayer.getPseudo(), Date.valueOf(LocalDate.now()).toString(), 0, LocalTime.now().toString(), null);
+    	        	System.out.println("création de quizgamegui" + leScore.getDate_game());
+    	        	
+    	            client.removeListener(this);  // Supprime le Listener
+    	        	responseReceived = true;
+    	        }
+    	    }
+    	};
+    	client.addListener(listener);
+    	client.sendTCP("multiplayer");
     	
+    	
+    }
+    
+    public void ReturnScore() {
+    	System.out.println("entrée de la fonction returnscore");
+    	Listener listener = new Listener() {
+    	    public void received (Connection connection, Object object) {
+			    System.out.println("Objet reçu de type : " + object.getClass().getName());
+    	    	 if (object instanceof ArrayList<?>) {
+    	    	        ArrayList<Score> scores = (ArrayList<Score>) object;
+    	    	        theGame.setLesScores(scores);
+    	    	        for (Score score : scores) {
+							System.out.println(score.getPlayer_score());
+						}
+    	    	        responseReceived = true;
+    	    	        client.removeListener(this);  // Supprime le Listener
+    	    	 }
+    	    }
+    	};
+    	client.addListener(listener);
+    	System.out.println("Score du joueur : "+ leScore.getPlayer_score());
+    	client.sendTCP(leScore);
+    	
+    	while(!responseReceived) {
+            try {
+                Thread.sleep(100); // Attendre 100 millisecondes
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    	System.out.println("nom du joueur : "+ leScore.getPseaudo());
+    	CreateGameStart();
     }
     
     public Game getTheGame() {

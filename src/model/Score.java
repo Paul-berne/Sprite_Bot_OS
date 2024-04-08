@@ -7,13 +7,16 @@ public class Score {
 	
 	private int id_game;
 	private String pseaudo;
-	private Date date_game;
+	private String date_game;
 	private int player_score;
-	private LocalTime time_begin;
-	private LocalTime time_end;
+	private String time_begin;
+	private String time_end;
 	
-	public Score(int id_game, String pseaudo, Date date_game, int player_score, LocalTime time_begin,
-			LocalTime time_end) {
+
+	public Score() {
+		
+	}
+	public Score(int id_game, String pseaudo, String date_game, int player_score, String time_begin, String time_end) {
 		super();
 		this.id_game = id_game;
 		this.pseaudo = pseaudo;
@@ -31,7 +34,7 @@ public class Score {
 		return pseaudo;
 	}
 
-	public Date getDate_game() {
+	public String getDate_game() {
 		return date_game;
 	}
 
@@ -39,20 +42,23 @@ public class Score {
 		return player_score;
 	}
 
-	public LocalTime getTime_begin() {
+	public String getTime_begin() {
 		return time_begin;
 	}
 
-	public LocalTime getTime_end() {
+	public String getTime_end() {
 		return time_end;
 	}
 	
+	public void setTime_end(String time_end) {
+		this.time_end = time_end;
+	}
+
 	public void addPlayerScore(int Score) {
 		player_score = player_score + Score;
 	}
-
-	public void setTime_end(LocalTime time_end) {
-		this.time_end = time_end;
-	}
 	
 }
+
+
+

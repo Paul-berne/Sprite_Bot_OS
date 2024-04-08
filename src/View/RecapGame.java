@@ -49,9 +49,9 @@ public class RecapGame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Génère de nouvelles questions, ferme la fenêtre actuelle et lance une nouvelle partie
-                controller.generateNewQuestions();
-                dispose();
-                controller.CreateQuizGameGUI();
+                controller.CreateQuizGameGUIMono();
+            	dispose();
+                
             }
         });
         panel.add(replayButton);
