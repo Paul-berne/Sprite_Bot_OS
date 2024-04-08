@@ -47,5 +47,12 @@ public class Score {
 		return time_end;
 	}
 	
+	public void addPlayerScore(int Score) {
+		player_score = player_score + Score;
+	}
+
+	public void setTime_end(LocalTime time_end) {
+		this.time_end = time_end;
+	}
 	
 }

@@ -154,13 +154,10 @@ public class Controller {
     	Listener listener = new Listener() {
     	    public void received (Connection connection, Object object) {
     	        if (object instanceof Game) {
-    	        	/**SwingUtilities.invokeLater(() -> {
-    	                QuizGameGUI monIHM = new QuizGameGUI(null, theGame);
-    	                
-    	            });**/
     	        	theGame = (Game) object;
     	        	leScore = new Score(theGame.getId_game(), lePlayer.getPseudo(), Date.valueOf(LocalDate.now()), 0, LocalTime.now(), null);
     	        	System.out.println("création de quizgamegui" + leScore.getDate_game());
+    	        	
     	            client.removeListener(this);  // Supprime le Listener
     	        	responseReceived = true;
     	        }
@@ -169,6 +166,12 @@ public class Controller {
     	client.addListener(listener);
     	client.sendTCP("monoplayer");
 
+    	if (theGame.getStatut() != null) {
+    		SwingUtilities.invokeLater(() -> {
+                QuizGameGUI monIHM = new QuizGameGUI(this, theGame);
+            });
+		}
+    	
         while(!responseReceived) {
             try {
                 Thread.sleep(100); // Attendre 100 millisecondes
@@ -230,4 +233,9 @@ public class Controller {
 	public static class SampleResponse {
 	    public String text;
 	}
+
+	public Score getLeScore() {
+		return leScore;
+	}
+	
 }

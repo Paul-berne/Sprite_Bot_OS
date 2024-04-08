@@ -4,11 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import control.Controller;
 import model.Answer;
 import model.Question;
+import model.Score;
 import model.Game;
 
 public class QuizGameGUI extends JFrame {
@@ -18,7 +20,7 @@ public class QuizGameGUI extends JFrame {
 
     // Le jeu de quiz
     private Game game;
-
+    
     // L'index de la question actuelle
     private int currentQuestionIndex = 0;
 
@@ -31,7 +33,7 @@ public class QuizGameGUI extends JFrame {
     public QuizGameGUI(Controller leController, Game game) {
         this.theController = leController;
         this.game = game;
-
+        
         // Configuration de la fenêtre
         setResizable(false);
         setIconImage(Toolkit.getDefaultToolkit().getImage("img\\sb-logo-monogram-circle.jpg"));
@@ -111,7 +113,7 @@ public class QuizGameGUI extends JFrame {
         }
 
         if (selectedAnswerIndex != -1 && currentQuestion.getAnswers().get(selectedAnswerIndex).getIsCorrect()) {
-            game.addPlayerScore(10);
+            theController.getLeScore().addPlayerScore(10);
             JOptionPane.showMessageDialog(this, "Bravo ! Vous avez obtenu la bonne réponse.", "Réponse correcte", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Dommage, la réponse était incorrecte.", "Réponse incorrecte", JOptionPane.WARNING_MESSAGE);
@@ -124,6 +126,7 @@ public class QuizGameGUI extends JFrame {
         if (currentQuestionIndex < game.getLesQuestions().size()) {
             displayQuestion();
         } else {
+        	theController.getLeScore().setTime_end(LocalTime.now());
             endGame();
         }
     }
