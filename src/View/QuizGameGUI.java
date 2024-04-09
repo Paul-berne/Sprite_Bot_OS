@@ -39,7 +39,7 @@ public class QuizGameGUI extends JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage("img\\sb-logo-monogram-circle.jpg"));
         setTitle("Quiz Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(941, 495);
+        setSize(1422, 742);
         setLocationRelativeTo(null);
 
         // Initialisation des composants d'interface utilisateur
@@ -114,9 +114,9 @@ public class QuizGameGUI extends JFrame {
 
         if (selectedAnswerIndex != -1 && currentQuestion.getAnswers().get(selectedAnswerIndex).getIsCorrect()) {
             theController.getLeScore().addPlayerScore(10);
-            JOptionPane.showMessageDialog(this, "Bravo ! Vous avez obtenu la bonne réponse.", "Réponse correcte", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(this, "Bravo ! Vous avez obtenu la bonne réponse.", "Réponse correcte", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Dommage, la réponse était incorrecte.", "Réponse incorrecte", JOptionPane.WARNING_MESSAGE);
+            //JOptionPane.showMessageDialog(this, "Dommage, la réponse était incorrecte.", "Réponse incorrecte", JOptionPane.WARNING_MESSAGE);
         }
     }
 

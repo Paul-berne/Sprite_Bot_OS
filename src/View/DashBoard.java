@@ -61,6 +61,23 @@ public class DashBoard extends JFrame {
         });
         btnmultiplayer.setBounds(223, 286, 109, 44);
         contentPane.add(btnmultiplayer);
+        if (unController.getTheGame() != null) {
+        	System.out.println(unController.getLesScores() != null);
+            System.out.println(unController.getTheGame().getType_game() == "monoplayer");
+		}
+        
+        if (unController.getLesScores() != null && unController.getTheGame().getType_game() == "monoplayer") {
+        	JLabel resultgame;
+        	if (unController.getLeScore().getPlayer_score() >= 30) {
+            	resultgame = new JLabel("Bravo vous avez gagné !! Avec un score de " + unController.getLeScore().getPlayer_score());
+			}else {
+            	resultgame = new JLabel("Bravo vous avez gagné !! Avec un score de " + unController.getLeScore().getPlayer_score());
+			}
+        	
+        	resultgame.setBounds(420, 42, 257, 20);
+            contentPane.add(resultgame);
+		}
+        
         
 
         // Ajout d'un écouteur d'événements pour le bouton "Start"

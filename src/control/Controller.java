@@ -164,8 +164,6 @@ public class Controller {
     	client.addListener(listener);
     	client.sendTCP("monoplayer");
     	
-    	
-    	
         while(!responseReceived) {
             try {
                 Thread.sleep(100); // Attendre 100 millisecondes
@@ -197,12 +195,10 @@ public class Controller {
     	};
     	client.addListener(listener);
     	client.sendTCP("multiplayer");
-    	
-    	
     }
     
     public void ReturnScore() {
-    	System.out.println("entrée de la fonction returnscore");
+    	System.out.println("entrée de la fonction return score");
     	Listener listener = new Listener() {
     	    public void received (Connection connection, Object object) {
 			    System.out.println("Objet reçu de type : " + object.getClass().getName());
@@ -283,5 +279,10 @@ public class Controller {
 	public Score getLeScore() {
 		return leScore;
 	}
+
+	public ArrayList<Score> getLesScores() {
+		return lesScores;
+	}
+	
 	
 }

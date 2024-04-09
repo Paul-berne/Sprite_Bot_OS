@@ -5,8 +5,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import control.Controller;
-import model.Player;
-import tools.BCrypt;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
