@@ -4,17 +4,38 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import control.Controller;
+
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JTextPane;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
+
 import javax.swing.JLabel;
 
 public class DashBoard extends JFrame {
 
     // Contrôleur associé à la vue
     private Controller myController;
+    
+    private Connection connection;
+    private Statement statement;
+    private ResultSet resultSet;
 
     // Panneau de contenu
     private JPanel contentPane;
@@ -29,7 +50,7 @@ public class DashBoard extends JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage("img\\sb-logo-monogram-circle.jpg"));
         setTitle("Sprite bot");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 703, 401);
+        setBounds(100, 100, 1036, 619);
 
         // Panneau de contenu
         contentPane = new JPanel();
@@ -39,44 +60,79 @@ public class DashBoard extends JFrame {
 
         // Bouton "Start"
         JButton btnMonoplayer = new JButton("Monoplayer");
-        btnMonoplayer.setBounds(93, 286, 109, 44);
+        btnMonoplayer.setBounds(250, 525, 109, 44);
         contentPane.add(btnMonoplayer);
+        getRootPane().setDefaultButton(btnMonoplayer);
         
         JButton btnLeave = new JButton("Leave");
         btnLeave.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         	}
         });
-        btnLeave.setBounds(351, 286, 188, 44);
+        btnLeave.setBounds(572, 525, 188, 44);
         contentPane.add(btnLeave);
         
+        System.out.println(unController.getLePlayer().getNomclassement());
         JLabel lblNewLabel = new JLabel("Welcome " + unController.getLePlayer().getPseudo() + " !");
-        lblNewLabel.setBounds(223, 11, 257, 20);
+        lblNewLabel.setBounds(339, 11, 257, 20);
         contentPane.add(lblNewLabel);
+        
+        JLabel resultgame;
+        
         
         JButton btnmultiplayer = new JButton("Multiplayer");
         btnmultiplayer.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         	}
         });
-        btnmultiplayer.setBounds(223, 286, 109, 44);
+        btnmultiplayer.setBounds(409, 525, 109, 44);
         contentPane.add(btnmultiplayer);
-        if (unController.getTheGame() != null) {
-        	System.out.println(unController.getLesScores() != null);
-            System.out.println(unController.getTheGame().getType_game() == "monoplayer");
+        
+        DefaultCategoryDataset dataset = createDataset();
+        JFreeChart chart = ChartFactory.createLineChart(
+                "Progression du joueur",
+                "Date",
+                "Score",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true, true, false);
+
+        CategoryPlot plot = (CategoryPlot) chart.getPlot();
+
+        NumberAxis rangeAxis = new NumberAxis();
+        rangeAxis.setRange(0.0, 50.0);
+        rangeAxis.setTickUnit(new NumberTickUnit(10));
+
+        plot.setRangeAxis(rangeAxis);
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+        chartPanel.setBounds(132, 110, 878, 389);
+        contentPane.add(chartPanel);
+        
+        JLabel rank_player = new JLabel("Votre rank est " + unController.getLePlayer().getNomclassement());
+        rank_player.setBounds(572, 14, 374, 14);
+        contentPane.add(rank_player);
+        
+        
+        try {
+        	System.out.println(unController.getTheGame().getType_game() != null);
+            System.out.println(unController.getTheGame().getType_game().equals("monoplayer"));
+            if (unController.getTheGame().getType_game() != null && unController.getTheGame().getType_game().equals("monoplayer")  ) {
+
+            	if (unController.getLeScore().getPlayer_score() >= 30) {
+                	resultgame = new JLabel("Bravo vous avez gagné !! Avec un score de " + unController.getLeScore().getPlayer_score());
+    			}else {
+    				resultgame = new JLabel("Malheureusement vous avez perdu, votre score est de " + unController.getLeScore().getPlayer_score() + " retentez votre chance :D");
+    			}
+            	
+            	resultgame.setBounds(23, 42, 539, 20);
+                contentPane.add(resultgame);
+                }
+        } catch (Exception e) {
+			// TODO: handle exception
 		}
         
-        if (unController.getLesScores() != null && unController.getTheGame().getType_game() == "monoplayer") {
-        	JLabel resultgame;
-        	if (unController.getLeScore().getPlayer_score() >= 30) {
-            	resultgame = new JLabel("Bravo vous avez gagné !! Avec un score de " + unController.getLeScore().getPlayer_score());
-			}else {
-            	resultgame = new JLabel("Bravo vous avez gagné !! Avec un score de " + unController.getLeScore().getPlayer_score());
-			}
-        	
-        	resultgame.setBounds(420, 42, 257, 20);
-            contentPane.add(resultgame);
-		}
+        
         
         
 
@@ -114,5 +170,37 @@ public class DashBoard extends JFrame {
                 System.out.println("Game Closed!");
             }
         });
+    }
+    
+    public DefaultCategoryDataset createDataset() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    	try {
+            // Initialise le contrôleur et établit la connexion à la base de données
+    		
+            String dbname = this.myController.getMyConfiguration().readProperty("databaseprivate.url");
+            String username = this.myController.getMyConfiguration().readProperty("database.username");
+            String password = this.myController.getMyConfiguration().readProperty("database.password");
+
+            try {
+            	this.connection = DriverManager.getConnection(dbname, username, password);	
+			} catch (Exception e) {
+				dbname = this.myController.getMyConfiguration().readProperty("databasepublic.url");
+                this.connection = DriverManager.getConnection(dbname, username, password);
+			}
+            this.statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT date_game, player_score, time_end FROM score WHERE player_score is not null and pseudo = '" + myController.getLePlayer().getPseudo() + "'");
+            while (resultSet.next()) {
+            	Time time = resultSet.getTime("time_end");
+                String date = resultSet.getString("date_game");
+                int score = resultSet.getInt("player_score");
+                String dateTime = date + " " + time.toString();
+                dataset.addValue(score, "Score", dateTime);
+            }
+        } catch (SQLException e) {
+            // Gère les exceptions liées à la connexion à la base de données
+            e.printStackTrace();
+        }
+    	return dataset;
+    	
     }
 }

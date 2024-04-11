@@ -1,6 +1,7 @@
 package control;
 
 import java.io.IOException;
+import java.nio.file.Watchable;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -21,6 +22,7 @@ import view.*;
 public class Controller {
 
     // Spécification
+	private Configuration myConfiguration;
 	
 	//model
     private Game theGame;
@@ -40,6 +42,9 @@ public class Controller {
 
     // Implémentation
     public Controller() throws ParseException, SQLException {
+    	
+    	this.myConfiguration = new Configuration();
+    	
         // Initialise la configuration, la fenêtre de connexion et charge les questions
 		client = new Client();
 		kryo = client.getKryo();
@@ -79,7 +84,7 @@ public class Controller {
     	        if (object instanceof Player) {
     	        	if (((Player) object).getNomclassement() != "") {
     	        		System.out.println("Received response from server: " + ((Player) object).getNomclassement());
-        	            
+        	            lePlayer.setNomclassement(((Player) object).getNomclassement());
         	            responseLogin = true;
         	            client.removeListener(this);  // Supprime le Listener
 					}else {
@@ -146,6 +151,13 @@ public class Controller {
             monIHM.setVisible(true);
         });
     }
+    
+    public void CreateTheGame() {
+    	SwingUtilities.invokeLater(() -> {
+            QuizGameGUI monIHM = new QuizGameGUI(this, theGame);
+            monIHM.setVisible(true);
+        });
+    }
 
     // Crée l'interface graphique du jeu de quiz
     public void CreateQuizGameGUIMono() {
@@ -172,10 +184,7 @@ public class Controller {
             }
         }
         if (responseReceived) {
-    		SwingUtilities.invokeLater(() -> {
-                QuizGameGUI monIHM = new QuizGameGUI(this, theGame);
-                monIHM.setVisible(true);
-            });
+    		CreateTheGame();
 		}
         responseReceived = false;
     }
@@ -185,16 +194,27 @@ public class Controller {
     	    public void received (Connection connection, Object object) {
     	        if (object instanceof Game) {
     	        	theGame = (Game) object;
-    	        	leScore = new Score(theGame.getId_game(), lePlayer.getPseudo(), Date.valueOf(LocalDate.now()).toString(), 0, LocalTime.now().toString(), null);
-    	        	System.out.println("création de quizgamegui" + leScore.getDate_game());
-    	        	
+    	        	leScore = new Score(theGame.getId_game(), lePlayer.getPseudo(), null, 0, null , null);
     	            client.removeListener(this);  // Supprime le Listener
+    	            
     	        	responseReceived = true;
     	        }
     	    }
     	};
     	client.addListener(listener);
     	client.sendTCP("multiplayer");
+    	
+    	while(!responseReceived) {
+            try {
+                Thread.sleep(100); // Attendre 100 millisecondes
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    	if (responseReceived) {
+			WaitStartGameGUI laFileDattente = new WaitStartGameGUI(this);
+		}
+    	responseReceived = false;
     }
     
     public void ReturnScore() {
@@ -282,6 +302,18 @@ public class Controller {
 
 	public ArrayList<Score> getLesScores() {
 		return lesScores;
+	}
+
+	public Kryo getKryo() {
+		return kryo;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public Configuration getMyConfiguration() {
+		return myConfiguration;
 	}
 	
 	

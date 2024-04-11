@@ -57,6 +57,14 @@ public class Score {
 	public void addPlayerScore(int Score) {
 		player_score = player_score + Score;
 	}
+	public void setDate_game(String date_game) {
+		this.date_game = date_game;
+	}
+	public void setTime_begin(String time_begin) {
+		this.time_begin = time_begin;
+	}
+	
+	
 	
 }
 

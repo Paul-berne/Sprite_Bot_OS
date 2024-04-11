@@ -66,7 +66,8 @@ public class Login extends JFrame {
         JButton btnLogin = new JButton("Login");
         btnLogin.setBounds(23, 82, 89, 23);
         contentPane.add(btnLogin);
-
+        getRootPane().setDefaultButton(btnLogin);
+        
         // Bouton "Change Password"
         JButton btnChangePassword = new JButton("Change Password");
         btnChangePassword.addActionListener(new ActionListener() {

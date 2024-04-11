@@ -60,7 +60,8 @@ public class QuizGameGUI extends JFrame {
         // Initialisation du bouton de soumission
         submitButton = new JButton("Submit");
         submitButton.setFont(new Font("Arial", Font.BOLD, 16));
-
+        getRootPane().setDefaultButton(submitButton);
+        
         // Configuration du panneau principal
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
