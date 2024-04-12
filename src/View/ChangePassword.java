@@ -91,7 +91,20 @@ public class ChangePassword extends JFrame {
         	}
 
         });
-        btnChangePassword.setBounds(10, 110, 220, 23);
+        btnChangePassword.setBounds(10, 110, 184, 23);
         contentPane.add(btnChangePassword);
+        
+        JButton btnLeave = new JButton("Leave");
+        btnLeave.setBounds(212, 110, 92, 23);
+        contentPane.add(btnLeave);
+        
+        btnLeave.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				myController.DeletePlayerArray();
+				dispose();				
+			}
+		});
     }
 }

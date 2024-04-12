@@ -73,6 +73,11 @@ public class Controller {
         this.myLogin.setLocation(100, 100);
         myLogin.setVisible(true);
     }
+    
+    public void DeletePlayerArray() {
+    	lePlayer.setAction("delete");
+    	client.sendTCP(lePlayer);
+    }
 
     //side client
     // Vérifie les informations de connexion de l'utilisateur

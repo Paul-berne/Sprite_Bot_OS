@@ -50,7 +50,7 @@ public class DashBoard extends JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage("img\\sb-logo-monogram-circle.jpg"));
         setTitle("Sprite bot");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 1036, 619);
+        setBounds(100, 100, 1108, 619);
 
         // Panneau de contenu
         contentPane = new JPanel();
@@ -110,8 +110,12 @@ public class DashBoard extends JFrame {
         contentPane.add(chartPanel);
         
         JLabel rank_player = new JLabel("Votre rank est " + unController.getLePlayer().getNomclassement());
-        rank_player.setBounds(572, 14, 374, 14);
+        rank_player.setBounds(572, 14, 170, 14);
         contentPane.add(rank_player);
+        
+        JLabel rank_player_1 = new JLabel("Votre rank est <dynamic>");
+        rank_player_1.setBounds(818, 14, 170, 14);
+        contentPane.add(rank_player_1);
         
         
         try {
@@ -164,6 +168,7 @@ public class DashBoard extends JFrame {
         
         btnLeave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	myController.DeletePlayerArray();
                 // Ferme la fenêtre actuelle
                 dispose();
                 // Affiche un message dans la console
@@ -188,7 +193,8 @@ public class DashBoard extends JFrame {
                 this.connection = DriverManager.getConnection(dbname, username, password);
 			}
             this.statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT date_game, player_score, time_end FROM score WHERE player_score is not null and pseudo = '" + myController.getLePlayer().getPseudo() + "'");
+            System.out.println("SELECT date_game, player_score, time_end FROM score WHERE player_score is not null and pseudo = '" + myController.getLePlayer().getPseudo() + "'  ");
+            ResultSet resultSet = statement.executeQuery("SELECT date_game, player_score, time_end FROM score WHERE player_score is not null and pseudo = '" + myController.getLePlayer().getPseudo() + "' order by date_game limit 20");
             while (resultSet.next()) {
             	Time time = resultSet.getTime("time_end");
                 String date = resultSet.getString("date_game");
