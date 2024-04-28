@@ -135,7 +135,12 @@ public class QuizGameGUI extends JFrame {
     // Affiche un message de fin de jeu avec le score final du joueur
     private void endGame() {
     	JOptionPane.showMessageDialog(this, "voulez-vous finir ?", "oui",JOptionPane.INFORMATION_MESSAGE);
-    	theController.ReturnScore();
+    	
+    	if (game.getType_game().toString() == "multiplayer") {
+			theController.CreateEnding();
+		}else {
+	    	theController.ReturnScore();
+		}
         dispose();
     }
 }

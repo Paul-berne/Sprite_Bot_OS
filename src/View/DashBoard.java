@@ -72,7 +72,6 @@ public class DashBoard extends JFrame {
         btnLeave.setBounds(572, 525, 188, 44);
         contentPane.add(btnLeave);
         
-        System.out.println(unController.getLePlayer().getNomclassement());
         JLabel lblNewLabel = new JLabel("Welcome " + unController.getLePlayer().getPseudo() + " !");
         lblNewLabel.setBounds(339, 11, 257, 20);
         contentPane.add(lblNewLabel);
@@ -119,8 +118,6 @@ public class DashBoard extends JFrame {
         
         
         try {
-        	System.out.println(unController.getTheGame().getType_game() != null);
-            System.out.println(unController.getTheGame().getType_game().equals("monoplayer"));
             if (unController.getTheGame().getType_game() != null && unController.getTheGame().getType_game().equals("monoplayer")  ) {
 
             	if (unController.getLeScore().getPlayer_score() >= 30) {
@@ -168,7 +165,7 @@ public class DashBoard extends JFrame {
         
         btnLeave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	myController.DeletePlayerArray();
+            	myController.DeletePlayerArray("delete");
                 // Ferme la fenêtre actuelle
                 dispose();
                 // Affiche un message dans la console
@@ -193,7 +190,6 @@ public class DashBoard extends JFrame {
                 this.connection = DriverManager.getConnection(dbname, username, password);
 			}
             this.statement = connection.createStatement();
-            System.out.println("SELECT date_game, player_score, time_end FROM score WHERE player_score is not null and pseudo = '" + myController.getLePlayer().getPseudo() + "'  ");
             ResultSet resultSet = statement.executeQuery("SELECT date_game, player_score, time_end FROM score WHERE player_score is not null and pseudo = '" + myController.getLePlayer().getPseudo() + "' order by date_game limit 20");
             while (resultSet.next()) {
             	Time time = resultSet.getTime("time_end");

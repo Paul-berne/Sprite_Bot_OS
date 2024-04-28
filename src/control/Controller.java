@@ -68,14 +68,15 @@ public class Controller {
 			e.printStackTrace();
 		} 
 		
+		
 		this.lePlayer = new Player();
         this.myLogin = new Login(this);
         this.myLogin.setLocation(100, 100);
         myLogin.setVisible(true);
     }
     
-    public void DeletePlayerArray() {
-    	lePlayer.setAction("delete");
+    public void DeletePlayerArray(String msg) {
+    	lePlayer.setAction(msg);
     	client.sendTCP(lePlayer);
     }
 
@@ -158,10 +159,17 @@ public class Controller {
     }
     
     public void CreateTheGame() {
+    	System.out.println("createthegame : " + theGame.getType_game().toString());
     	SwingUtilities.invokeLater(() -> {
             QuizGameGUI monIHM = new QuizGameGUI(this, theGame);
             monIHM.setVisible(true);
         });
+    }
+    
+    public void CreateEnding() {
+    	System.out.println("createending");
+    	Ending_game ending_game = new Ending_game(this);
+    	
     }
 
     // Crée l'interface graphique du jeu de quiz
@@ -199,6 +207,7 @@ public class Controller {
     	    public void received (Connection connection, Object object) {
     	        if (object instanceof Game) {
     	        	theGame = (Game) object;
+    	        	theGame.setType_game("multiplayer");
     	        	leScore = new Score(theGame.getId_game(), lePlayer.getPseudo(), null, 0, null , null);
     	            client.removeListener(this);  // Supprime le Listener
     	            
@@ -233,6 +242,7 @@ public class Controller {
     	    	        for (Score score : scores) {
 							System.out.println(score.getPlayer_score());
 						}
+    	    	        CreateGameStart();
     	    	        responseReceived = true;
     	    	        client.removeListener(this);  // Supprime le Listener
     	    	 }
@@ -250,7 +260,6 @@ public class Controller {
             }
         }
     	System.out.println("nom du joueur : "+ leScore.getPseaudo());
-    	CreateGameStart();
     }
     
     public Game getTheGame() {

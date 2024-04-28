@@ -102,7 +102,7 @@ public class ChangePassword extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				myController.DeletePlayerArray();
+				myController.DeletePlayerArray("delete");
 				dispose();				
 			}
 		});
