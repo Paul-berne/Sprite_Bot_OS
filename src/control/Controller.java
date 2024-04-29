@@ -46,7 +46,7 @@ public class Controller {
     	this.myConfiguration = new Configuration();
     	
         // Initialise la configuration, la fenêtre de connexion et charge les questions
-		client = new Client();
+		client = new Client(5000, 5000);
 		kryo = client.getKryo();
 		kryo.register(SampleRequest.class);
 		kryo.register(String.class);

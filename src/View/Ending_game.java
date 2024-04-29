@@ -81,6 +81,7 @@ public class Ending_game{
 				}
     	    }
     	};
+    	System.out.println("score du joueur : " + unController.getLeScore());
     	client.addListener(listener);
     	client.sendTCP(unController.getLeScore());
     	
