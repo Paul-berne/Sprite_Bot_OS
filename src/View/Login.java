@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,91 +27,83 @@ public class Login extends JFrame {
 
     // Constructeur
     public Login(Controller unController) {
-        // Initialise la vue avec le contrôleur spécifié
-        this.myController = unController;
-
-        // Paramètres de la fenêtre
+    	this.myController = unController;
+    	
         setResizable(false);
-        setIconImage(Toolkit.getDefaultToolkit().getImage("img\\sb-logo-monogram-circle.jpg"));
         setTitle("Sprite bot");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 278, 155);
+        setBounds(100, 100, 464, 242); 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        // Labels pour le login et le mot de passe
         JLabel lblLogin = new JLabel("Login : ");
-        lblLogin.setBounds(10, 11, 46, 14);
+        lblLogin.setBounds(30, 30, 60, 20); 
         contentPane.add(lblLogin);
 
         JLabel lblPwd = new JLabel("Password :");
-        lblPwd.setBounds(10, 36, 62, 14);
+        lblPwd.setBounds(30, 70, 80, 20); 
         contentPane.add(lblPwd);
 
-        // Champs de texte pour le login et le mot de passe
         txtLogin = new JTextField();
-        txtLogin.setBounds(87, 11, 86, 20);
+        txtLogin.setBounds(120, 30, 150, 20); 
         contentPane.add(txtLogin);
         txtLogin.setColumns(10);
 
         txtPwd = new JPasswordField();
-        txtPwd.setColumns(10);
-        txtPwd.setBounds(87, 36, 86, 20);
+        txtPwd.setBounds(120, 70, 150, 20); 
         contentPane.add(txtPwd);
 
-        // Bouton "Login"
         JButton btnLogin = new JButton("Login");
-        btnLogin.setBounds(23, 82, 89, 23);
+        btnLogin.setBounds(70, 146, 100, 30); 
         contentPane.add(btnLogin);
-        getRootPane().setDefaultButton(btnLogin);
-        
-        // Bouton "Change Password"
+
         JButton btnChangePassword = new JButton("Change Password");
+        btnChangePassword.setBounds(206, 146, 130, 30); 
+        contentPane.add(btnChangePassword);
+
         btnChangePassword.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Récupère le nom d'utilisateur et le mot de passe
                 String nomUtilisateur = txtLogin.getText();
                 String motDePasse = txtPwd.getText();
                 myController.getLePlayer().setPseudo(nomUtilisateur);
                 myController.getLePlayer().setPassword(motDePasse);
                 myController.getLePlayer().setNomclassement("");
                 
-                // Vérifie l'authentification
-                if (unController.verifyUserLogin()) {
-                    // Affiche la fenêtre de changement de mot de passe
-                	System.out.println("méthode createframechangepassword");
+                myController.AskChangePassword();
+                if (myController.verifyUserLogin()) {
                     myController.CreateFrameChangePassword(nomUtilisateur);
-                    dispose(); // Ferme la fenêtre actuelle
+                    dispose();
                 } else {
-                    // Affiche un message d'erreur
-                    JOptionPane.showMessageDialog(null, "Nom d'utilisateur ou mot de passe incorrect.");
+                    if (myController.getLePlayer().getNomclassement().equals("already connect")) {
+                        JOptionPane.showMessageDialog(null, "Ce joueur est déjà connecté.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Nom d'utilisateur ou mot de passe incorrect.");
+                    }
                 }
             }
         });
-        btnChangePassword.setBounds(134, 82, 118, 23);
-        contentPane.add(btnChangePassword);
 
-        // Ajout d'un écouteur d'événements pour le bouton "Login"
+
+        
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	// Récupère le nom d'utilisateur et le mot de passe
                 String nomUtilisateur = txtLogin.getText();
                 String motDePasse = txtPwd.getText();
                 myController.getLePlayer().setPseudo(nomUtilisateur);
                 myController.getLePlayer().setPassword(motDePasse);
                 myController.getLePlayer().setNomclassement("");
-                
-                // Vérifie l'authentification
-                if (unController.verifyUserLogin()) {
-                    // Affiche la fenêtre de login
-                	System.out.println("on met le gamestart");
+
+                if (myController.verifyUserLogin()) {
                     myController.CreateGameStart();
-                    dispose(); // Ferme la fenêtre actuelle
+                    dispose();
                 } else {
-                    // Affiche un message d'erreur
-                    JOptionPane.showMessageDialog(null, "Nom d'utilisateur ou mot de passe incorrect.");
+                    if (myController.getLePlayer().getNomclassement().equals("already connect")) {
+                        JOptionPane.showMessageDialog(null, "Ce joueur est déjà connecté.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Nom d'utilisateur ou mot de passe incorrect.");
+                    }
                 }
             }
         });

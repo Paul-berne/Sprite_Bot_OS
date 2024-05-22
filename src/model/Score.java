@@ -1,8 +1,5 @@
 package model;
 
-import java.time.LocalTime;
-import java.util.Date;
-
 public class Score {
 	
 	private int id_game;
@@ -64,7 +61,7 @@ public class Score {
 		this.time_begin = time_begin;
 	}
 	
-	
+
 	
 }
 

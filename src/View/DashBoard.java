@@ -35,7 +35,6 @@ public class DashBoard extends JFrame {
     
     private Connection connection;
     private Statement statement;
-    private ResultSet resultSet;
 
     // Panneau de contenu
     private JPanel contentPane;
@@ -65,10 +64,6 @@ public class DashBoard extends JFrame {
         getRootPane().setDefaultButton(btnMonoplayer);
         
         JButton btnLeave = new JButton("Leave");
-        btnLeave.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	}
-        });
         btnLeave.setBounds(572, 525, 188, 44);
         contentPane.add(btnLeave);
         
@@ -80,10 +75,6 @@ public class DashBoard extends JFrame {
         
         
         JButton btnmultiplayer = new JButton("Multiplayer");
-        btnmultiplayer.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	}
-        });
         btnmultiplayer.setBounds(409, 525, 109, 44);
         contentPane.add(btnmultiplayer);
         
@@ -165,7 +156,7 @@ public class DashBoard extends JFrame {
         
         btnLeave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	myController.DeletePlayerArray("delete");
+            	myController.DeletePlayerArray("disconnect");
                 // Ferme la fenêtre actuelle
                 dispose();
                 // Affiche un message dans la console

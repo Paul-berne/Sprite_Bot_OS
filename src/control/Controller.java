@@ -1,7 +1,6 @@
 package control;
 
 import java.io.IOException;
-import java.nio.file.Watchable;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -15,6 +14,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+
 
 import model.*;
 import view.*;
@@ -64,14 +64,19 @@ public class Controller {
 		System.out.println("Connecting to server...");
 		try {
 			client.connect(5000, address, 54555, 54777);
+			if (client.isConnected()) {
+				System.out.println("Successfully connected to the server.");
+			} else {
+				System.out.println("Failed to connect to the server.");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		}
 		
 		
 		this.lePlayer = new Player();
         this.myLogin = new Login(this);
-        this.myLogin.setLocation(100, 100);
+        this.myLogin.setLocation(700, 250);
         myLogin.setVisible(true);
     }
     
@@ -80,20 +85,20 @@ public class Controller {
     	client.sendTCP(lePlayer);
     }
 
-    //side client
-    // Vérifie les informations de connexion de l'utilisateur
+   
     public boolean verifyUserLogin() {
     	lePlayer.setAction("login");
     	System.out.println("code listener");
     	Listener listener = new Listener() {
     	    public void received (Connection connection, Object object) {
     	        if (object instanceof Player) {
-    	        	if (((Player) object).getNomclassement() != "") {
+    	        	if (!(((Player) object).getNomclassement().equals("")) && !(((Player) object).getNomclassement().equals("already connect"))) {
     	        		System.out.println("Received response from server: " + ((Player) object).getNomclassement());
         	            lePlayer.setNomclassement(((Player) object).getNomclassement());
         	            responseLogin = true;
         	            client.removeListener(this);  // Supprime le Listener
 					}else {
+        	            lePlayer.setNomclassement(((Player) object).getNomclassement());
 						responseLogin = false;
 					}
     	        	responseReceived = true;
