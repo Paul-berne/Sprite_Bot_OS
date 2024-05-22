@@ -17,7 +17,7 @@ import com.esotericsoftware.kryonet.Listener;
 
 
 import model.*;
-import view.*;
+import View.*;
 
 public class Controller {
 
